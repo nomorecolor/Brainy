@@ -1,6 +1,6 @@
-﻿namespace Brainy.UI.Enums
+﻿namespace Brainy.Contracts.Enums
 {
-	public enum Categories
+	public enum Category
 	{
 		Person = 1,
 		Thing,
