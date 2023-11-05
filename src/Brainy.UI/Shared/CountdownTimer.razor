@@ -1,0 +1,95 @@
+﻿<p>Time remaining: @FormatTime(timeRemaining)</p>
+
+<button @onclick="Start" disabled="@isRunning">Start</button>
+<button @onclick="Stop" disabled="@(!isRunning)">Stop</button>
+<button @onclick="Reset">Reset</button>
+
+@code {
+	[Parameter]
+	public int Duration { get; set; }
+
+	[Parameter]
+	public EventCallback<bool> TimerStarted { get; set; }
+
+	[Parameter]
+	public EventCallback<bool> TimerStopped { get; set; }
+
+	private int timeRemaining;
+	private bool isRunning = false;
+
+	private System.Timers.Timer timer;
+	private DateTime startTime;
+
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+
+		Duration *= 1000;
+
+		timeRemaining = Duration;
+
+		timer = new System.Timers.Timer(77);
+		timer.Elapsed += TimerElapsed;
+	}
+
+	private void Start()
+	{
+		timeRemaining = Duration;
+
+		timer.Start();
+		isRunning = true;
+	}
+
+	private async Task Stop()
+	{
+		if (isRunning)
+		{
+			isRunning = false;
+
+			timer.Stop();
+			timer.Dispose();
+
+			if (TimerStopped.HasDelegate)
+			{
+				await TimerStopped.InvokeAsync(true);
+			}
+		}
+	}
+
+	private void Reset()
+	{
+		isRunning = false;
+		timeRemaining = Duration;
+
+		timer.Stop();
+	}
+
+	private void TimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
+	{
+		if (timeRemaining > 0)
+		{
+			timeRemaining -= (int)timer.Interval;
+
+			if (timeRemaining < 0)
+			{
+				timeRemaining = 0;
+			}
+		}
+		else
+		{
+			timer.Stop();
+			isRunning = false;
+
+			timeRemaining = Duration;
+		}
+
+		InvokeAsync(StateHasChanged);
+	}
+
+	private string FormatTime(int milliseconds)
+	{
+		var timeSpan = TimeSpan.FromMilliseconds(milliseconds);
+
+		return timeSpan.ToString(@"mm\:ss\.ff");
+	}
+}
