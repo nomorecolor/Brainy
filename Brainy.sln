@@ -5,7 +5,7 @@ VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D315CDEF-0993-4798-ADFB-78BE482BE55D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brainy.UI", "src\Brainy.UI\Brainy.UI.csproj", "{967F5838-2668-415F-810E-31AC3605633A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brainy.UI", "src\Brainy.UI\Brainy.UI.csproj", "{967F5838-2668-415F-810E-31AC3605633A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
