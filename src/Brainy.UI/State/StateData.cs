@@ -1,16 +1,16 @@
-﻿using Brainy.UI.Enums;
+﻿using Brainy.Contracts.Enums;
 
 namespace Brainy.UI.State
 {
 	public class StateData
 	{
-		private ICollection<Categories> _categories;
-		public ICollection<Categories> Categories { get => _categories; set { _categories = value; NotifyStateChanged(); } }
+		private ICollection<Category> _categories;
+		public ICollection<Category> Categories { get => _categories; set { _categories = value; NotifyStateChanged(); } }
 
 		private int _round;
 		public int Round { get => _round; set { _round = value; NotifyStateChanged(); } }
 
-		public void RemoveCategory(Categories category)
+		public void RemoveCategory(Category category)
 		{
 			Categories.Remove(category);
 
@@ -19,7 +19,7 @@ namespace Brainy.UI.State
 
 		public void Reset()
 		{
-			Categories = Enum.GetValues(typeof(Categories)).Cast<Categories>().ToHashSet();
+			Categories = Enum.GetValues(typeof(Category)).Cast<Category>().ToHashSet();
 			Round = 0;
 		}
 

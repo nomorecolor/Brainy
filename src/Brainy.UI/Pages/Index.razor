@@ -2,7 +2,6 @@
 
 @using Blazored.SessionStorage;
 @using Brainy.UI.Components
-@using Brainy.UI.Enums;
 @using Brainy.UI.State;
 
 @inject ISessionStorageService sessionStorageService
@@ -46,12 +45,12 @@
 
 	private async Task StartGame()
 	{
-		if (string.IsNullOrWhiteSpace(team1)
-		|| string.IsNullOrWhiteSpace(team2)
-		|| string.IsNullOrWhiteSpace(team3))
-		{
-			return;
-		}
+		// if (string.IsNullOrWhiteSpace(team1)
+		// || string.IsNullOrWhiteSpace(team2)
+		// || string.IsNullOrWhiteSpace(team3))
+		// {
+		// 	return;
+		// }
 
 		StateData.Round++;
 	}

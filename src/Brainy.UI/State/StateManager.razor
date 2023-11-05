@@ -1,5 +1,5 @@
 ﻿@using Blazored.SessionStorage;
-@using Brainy.UI.Enums;
+@using Brainy.Contracts.Enums;
 @using System.Text.Json;
 
 @implements IDisposable
@@ -11,40 +11,40 @@
 </CascadingValue>
 
 @code {
-    [Parameter]
-    public RenderFragment? ChildContent { get; set; }
+	[Parameter]
+	public RenderFragment? ChildContent { get; set; }
 
-    private readonly StateData _stateData = new StateData();
+	private readonly StateData _stateData = new StateData();
 
-    protected override void OnInitialized() => _stateData.OnStateChanged += OnStateChanged;
+	protected override void OnInitialized() => _stateData.OnStateChanged += OnStateChanged;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await LoadStateFromSessionStorage();
-        }
-    }
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			await LoadStateFromSessionStorage();
+		}
+	}
 
-    public void Dispose() => _stateData.OnStateChanged -= OnStateChanged;
+	public void Dispose() => _stateData.OnStateChanged -= OnStateChanged;
 
-    private async void OnStateChanged()
-    {
-        await SaveStateToSessionStorage();
+	private async void OnStateChanged()
+	{
+		await SaveStateToSessionStorage();
 
-        await InvokeAsync(StateHasChanged);
-    }
+		await InvokeAsync(StateHasChanged);
+	}
 
-    private async Task SaveStateToSessionStorage()
-    {
-        await sessionStorageService.SetItemAsync(nameof(_stateData.Categories), _stateData.Categories);
-        await sessionStorageService.SetItemAsync(nameof(_stateData.Round), _stateData.Round);
-    }
+	private async Task SaveStateToSessionStorage()
+	{
+		await sessionStorageService.SetItemAsync(nameof(_stateData.Categories), _stateData.Categories);
+		await sessionStorageService.SetItemAsync(nameof(_stateData.Round), _stateData.Round);
+	}
 
-    private async Task LoadStateFromSessionStorage()
-    {
-        _stateData.Categories = await sessionStorageService.GetItemAsync<HashSet<Categories>>(nameof(_stateData.Categories)) 
-            ?? Enum.GetValues(typeof(Categories)).Cast<Categories>().ToHashSet();
-        _stateData.Round = await sessionStorageService.GetItemAsync<int>(nameof(_stateData.Round));
-    }
+	private async Task LoadStateFromSessionStorage()
+	{
+		_stateData.Categories = await sessionStorageService.GetItemAsync<HashSet<Category>>(nameof(_stateData.Categories))
+			?? Enum.GetValues(typeof(Category)).Cast<Category>().ToHashSet();
+		_stateData.Round = await sessionStorageService.GetItemAsync<int>(nameof(_stateData.Round));
+	}
 }
