@@ -1,0 +1,35 @@
+﻿@using Blazored.SessionStorage;
+@using Brainy.UI.Enums;
+@using Brainy.UI.State;
+
+@inject ISessionStorageService sessionStorageService
+
+<h3>CategorySelection</h3>
+
+<ul>
+	@if (StateData.Categories is not null)
+	{
+		@foreach (var category in StateData.Categories)
+		{
+			<li @onclick=@(() => SelectCategory(category))>@category</li>
+		}
+	}
+</ul>
+
+@code {
+	[Parameter]
+	public EventCallback<Categories> OnCategorySelected { get; set; }
+
+	[CascadingParameter]
+	protected StateData StateData { get; set; }
+
+	private async Task SelectCategory(Categories category)
+	{
+		if (OnCategorySelected.HasDelegate)
+		{
+			await OnCategorySelected.InvokeAsync(category);
+		}
+
+		StateData.RemoveCategory(category);
+	}
+}

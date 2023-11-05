@@ -1,0 +1,14 @@
+﻿@using Brainy.UI.Enums;
+@using Brainy.UI.Shared
+@using Brainy.UI.State;
+
+<h1>Round1</h1>
+
+<CategorySelection />
+
+<button @onclick=@(() => StateData.Round++)>Next Round</button>
+
+@code {
+	[CascadingParameter]
+	protected StateData StateData { get; set; }
+}

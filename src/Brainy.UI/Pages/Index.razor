@@ -1,3 +1,67 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+@using Blazored.SessionStorage;
+@using Brainy.UI.Components
+@using Brainy.UI.Enums;
+@using Brainy.UI.State;
+
+@inject ISessionStorageService sessionStorageService
+@inject NavigationManager NavManager
+
+<h1>Brainy</h1>
+<button @onclick=@Reset>Reset</button>
+
+@if (StateData.Round == 0)
+{
+	<ul>
+		<li>
+			<label>Team 1:</label>
+			<input type="text" @bind=team1 />
+		</li>
+		<li>
+			<label>Team 2:</label>
+			<input type="text" @bind=team2 />
+		</li>
+		<li>
+			<label>Team 3:</label>
+			<input type="text" @bind=team3 />
+		</li>
+	</ul>
+
+	<button @onclick=@StartGame>Start Game</button>
+}
+
+@if (StateData.Round == 1)
+{
+	<Round1 />
+}
+
+@code {
+	[CascadingParameter]
+	protected StateData StateData { get; set; }
+
+	private string team1;
+	private string team2;
+	private string team3;
+
+	private async Task StartGame()
+	{
+		if (string.IsNullOrWhiteSpace(team1)
+		|| string.IsNullOrWhiteSpace(team2)
+		|| string.IsNullOrWhiteSpace(team3))
+		{
+			return;
+		}
+
+		StateData.Round++;
+	}
+
+	private async Task Reset()
+	{
+		StateData.Reset();
+
+		team1 =
+			team2 =
+			team3 = string.Empty;
+	}
+}
