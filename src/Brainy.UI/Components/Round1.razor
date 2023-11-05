@@ -1,14 +1,39 @@
-﻿@using Brainy.UI.Enums;
-@using Brainy.UI.Shared
+﻿@using Brainy.Contracts.Dtos;
+@using Brainy.Contracts.Enums;
+@using Brainy.UI.Shared;
 @using Brainy.UI.State;
+
+@inject HttpClient httpClient;
 
 <h1>Round1</h1>
 
-<CategorySelection />
+@if (!selected)
+{
+	<CategorySelector Categories=@StateData.Categories OnCategorySelected=@CategorySelected />
+}
 
+@if (selected)
+{
+	<AnswerDisplay AnswerSet=@answerSet />
+}
+
+<button @onclick=@(() => selected = false)>Back</button>
 <button @onclick=@(() => StateData.Round++)>Next Round</button>
 
 @code {
 	[CascadingParameter]
 	protected StateData StateData { get; set; }
+
+	private bool selected;
+
+	private AnswerSetDto answerSet;
+
+	private async Task CategorySelected(Category category)
+	{
+		answerSet = await httpClient.GetFromJsonAsync<AnswerSetDto>($"api/answerSet/{(int)category}");
+
+		StateData.RemoveCategory(category);
+
+		selected = true;
+	}
 }

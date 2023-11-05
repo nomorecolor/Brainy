@@ -1,0 +1,29 @@
+﻿@using Brainy.Contracts.Enums;
+
+<h3>CategorySelection</h3>
+
+<ul>
+	@if (Categories is not null)
+	{
+		@foreach (var category in Categories)
+		{
+			<li @onclick=@(() => SelectCategory(category))>@category</li>
+		}
+	}
+</ul>
+
+@code {
+	[Parameter]
+	public EventCallback<Category> OnCategorySelected { get; set; }
+
+	[Parameter]
+	public ICollection<Category> Categories { get; set; }
+
+	private async Task SelectCategory(Category category)
+	{
+		if (OnCategorySelected.HasDelegate)
+		{
+			await OnCategorySelected.InvokeAsync(category);
+		}
+	}
+}

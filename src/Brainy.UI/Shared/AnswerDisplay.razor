@@ -1,0 +1,22 @@
+﻿@using Brainy.Contracts.Dtos;
+
+@if (!string.IsNullOrEmpty(AnswerSet.Description))
+{
+	<p>@AnswerSet.Description</p>
+}
+
+<ul>
+	@foreach (var answer in AnswerSet.Answers)
+	{
+		<li @onclick=@(() => answer.IsCorrect = true)>@answer.Word</li>
+		@(answer.IsCorrect ? "Correct" : string.Empty)
+	}
+</ul>
+
+
+
+
+@code {
+	[Parameter]
+	public AnswerSetDto AnswerSet { get; set; }
+}
